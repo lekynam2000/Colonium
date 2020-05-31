@@ -3,7 +3,7 @@ function init() {
   var piece = getPiece(6, 4.5);
   var squareBoard = getSquareBoard(5, 10, 10, 1, 0xdddddd);
   scene.add(squareBoard);
-  scene.add(piece);
+  squareBoard.children[30].add(piece);
   var light = new THREE.AmbientLight(0xffffff); // soft white light
   scene.add(light);
   var camera = new THREE.PerspectiveCamera(
@@ -103,7 +103,8 @@ function getPiece(n, side) {
   ring.rotation.x = Math.PI / 2;
 
   cylinder.add(ring);
-  cylinder.position.y += 2.501;
+  cylinder.rotation.x = -Math.PI / 2;
+  cylinder.position.z += -2.501;
   return cylinder;
 }
 function getDot(side) {
