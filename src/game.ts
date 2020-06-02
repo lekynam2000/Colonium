@@ -1,6 +1,6 @@
 import { Square } from './model';
 
-export class Game {
+export default class Game {
   colorArray = [
     0xfc0303,
     0xf1f514,
@@ -16,7 +16,7 @@ export class Game {
   private phase: number;
   private queue: { row: number; col: number }[];
   public players: number;
-  private status: { dots: number; pieces: number };
+  private status: { dots: number; pieces: number }[] = [];
 
   constructor(map: any[] = null, players: number = 4) {
     this.queue = [];

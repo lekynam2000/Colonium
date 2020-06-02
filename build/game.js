@@ -1,8 +1,14 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Game = void 0;
-class Game {
-    constructor(map = null, players = 4) {
+var __spreadArrays = (this && this.__spreadArrays) || function () {
+    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+    for (var r = Array(s), k = 0, i = 0; i < il; i++)
+        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+            r[k] = a[j];
+    return r;
+};
+var Game = /** @class */ (function () {
+    function Game(map, players) {
+        if (map === void 0) { map = null; }
+        if (players === void 0) { players = 4; }
         this.colorArray = [
             0xfc0303,
             0xf1f514,
@@ -13,6 +19,7 @@ class Game {
             0xe3092d,
             0x1a1717,
         ];
+        this.status = [];
         this.queue = [];
         this.players = players;
         if (map) {
@@ -20,14 +27,14 @@ class Game {
         }
         else {
             this.gameMatrix = this.createSquareMatrix();
-            for (let i = 0; i < players; i++) {
+            for (var i = 0; i < players; i++) {
                 this.status[i] = { dots: 3, pieces: 1 };
             }
         }
         this.turn = 0;
         this.phase = 0;
     }
-    play(player, row, col) {
+    Game.prototype.play = function (player, row, col) {
         if (this.gameMatrix[row][col].player !== player) {
             throw new Error('Invalid move');
         }
@@ -39,7 +46,7 @@ class Game {
         }
         this.gameMatrix[row][col].dot += 1;
         if (this.gameMatrix[row][col].dot >= 4) {
-            this.explode([{ row, col }], player);
+            this.explode([{ row: row, col: col }], player);
         }
         if (this.phase === this.players - 1) {
             this.turn++;
@@ -48,12 +55,12 @@ class Game {
         else {
             this.phase++;
         }
-    }
-    createSquareMatrix() {
-        let defaultMap = [];
-        for (let i = 0; i < 10; i++) {
-            let row = [];
-            for (let j = 0; j < 10; j++) {
+    };
+    Game.prototype.createSquareMatrix = function () {
+        var defaultMap = [];
+        for (var i = 0; i < 10; i++) {
+            var row = [];
+            for (var j = 0; j < 10; j++) {
                 row.push({ dot: 0, player: null });
             }
             defaultMap.push(row);
@@ -63,12 +70,12 @@ class Game {
         defaultMap[7][2] = { dot: 3, player: 2 };
         defaultMap[7][7] = { dot: 3, player: 3 };
         return defaultMap;
-    }
-    valid(row, col) {
+    };
+    Game.prototype.valid = function (row, col) {
         if (!this.gameMatrix)
             return false;
-        let height = this.gameMatrix.length;
-        let width = this.gameMatrix[0].length;
+        var height = this.gameMatrix.length;
+        var width = this.gameMatrix[0].length;
         if (0 <= row &&
             row < height &&
             0 <= col &&
@@ -77,11 +84,12 @@ class Game {
             return true;
         }
         return false;
-    }
-    explode(arr, player) {
-        for (let el of arr) {
-            let row = el.row;
-            let col = el.col;
+    };
+    Game.prototype.explode = function (arr, player) {
+        for (var _i = 0, arr_1 = arr; _i < arr_1.length; _i++) {
+            var el = arr_1[_i];
+            var row = el.row;
+            var col = el.col;
             if (this.gameMatrix[row][col].dot >= 4) {
                 this.gameMatrix[row][col].dot -= 4;
                 if (this.gameMatrix[row][col].dot >= 4) {
@@ -89,11 +97,12 @@ class Game {
                 }
             }
         }
-        for (let el of arr) {
-            let row = el.row;
-            let col = el.col;
-            for (let r = row - 1; r < row + 2; r += 2) {
-                for (let c = col - 1; c < col + 2; c += 2) {
+        for (var _a = 0, arr_2 = arr; _a < arr_2.length; _a++) {
+            var el = arr_2[_a];
+            var row = el.row;
+            var col = el.col;
+            for (var r = row - 1; r < row + 2; r += 2) {
+                for (var c = col - 1; c < col + 2; c += 2) {
                     if (this.valid(r, c)) {
                         this.gameMatrix[r][c].dot += 1;
                         this.gameMatrix[r][c].player = player;
@@ -105,12 +114,13 @@ class Game {
             }
         }
         while (this.queue.length > 0) {
-            let currQueue = [...this.queue];
+            var currQueue = __spreadArrays(this.queue);
             this.queue = [];
             this.explode(currQueue, player);
         }
-    }
-    calculateStatus() { }
-}
-exports.Game = Game;
+    };
+    Game.prototype.calculateStatus = function () { };
+    return Game;
+}());
+export default Game;
 //# sourceMappingURL=game.js.map
