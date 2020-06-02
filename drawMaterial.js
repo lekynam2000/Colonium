@@ -1,7 +1,8 @@
-export function getPiece(n, side) {
-  var CylinderGeometry = new THREE.CylinderGeometry(side, side, side, 100);
+export function getPiece(n, color, side = 4.5) {
+  var height = side / 2;
+  var CylinderGeometry = new THREE.CylinderGeometry(side, side, height, 100);
   var CylinderMaterial = new THREE.MeshStandardMaterial({
-    color: 0x0000dd,
+    color,
     metalness: 0.4,
   });
   var cylinder = new THREE.Mesh(CylinderGeometry, CylinderMaterial);
@@ -17,7 +18,7 @@ export function getPiece(n, side) {
   });
   var ring = new THREE.Mesh(RingGeometry, RingMaterial);
 
-  ring.position.y += 0.501 * side;
+  ring.position.y += 0.501 * height;
   switch (n) {
     case 1:
       let dot = getDot(side / 5);
@@ -76,7 +77,7 @@ export function getPiece(n, side) {
 
   cylinder.add(ring);
   cylinder.rotation.x = -Math.PI / 2;
-  cylinder.position.z += -2.501;
+  cylinder.position.z += -height * 0.501;
   return cylinder;
 }
 export function getDot(side) {
@@ -127,7 +128,13 @@ export function getSquare(size, color) {
   mainRec.material.side = THREE.DoubleSide;
   return mainRec;
 }
-export function getSquareBoard(width, height, size, step, color) {
+export function getSquareBoard(
+  width,
+  height,
+  size = 10,
+  step = 1,
+  color = 0xdddddd
+) {
   var i;
   var board = new THREE.Group();
   for (i = 0; i < width * height; i++) {
