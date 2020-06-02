@@ -11,13 +11,14 @@ export default class Game {
     0xe3092d,
     0x1a1717,
   ];
-  private gameMatrix: Square[][];
+  public gameMatrix: Square[][];
   public turn: number;
-  private phase: number;
-  private queue: { row: number; col: number }[];
+  public phase: number;
+  public queue: { row: number; col: number }[];
   public players: number;
-  private status: { dots: number; pieces: number }[] = [];
-
+  public status: { dots: number; pieces: number }[] = [];
+  public width: number;
+  public height: number;
   constructor(map: any[] = null, players: number = 4) {
     this.queue = [];
     this.players = players;
@@ -28,6 +29,8 @@ export default class Game {
       for (let i = 0; i < players; i++) {
         this.status[i] = { dots: 3, pieces: 1 };
       }
+      this.width = 10;
+      this.height = 10;
     }
     this.turn = 0;
     this.phase = 0;
@@ -98,13 +101,20 @@ export default class Game {
       let row = el.row;
       let col = el.col;
       for (let r = row - 1; r < row + 2; r += 2) {
-        for (let c = col - 1; c < col + 2; c += 2) {
-          if (this.valid(r, c)) {
-            this.gameMatrix[r][c].dot += 1;
-            this.gameMatrix[r][c].player = player;
-            if (this.gameMatrix[r][c].dot >= 4) {
-              this.queue.unshift({ row: r, col: c });
-            }
+        if (this.valid(r, col)) {
+          this.gameMatrix[r][col].dot += 1;
+          this.gameMatrix[r][col].player = player;
+          if (this.gameMatrix[r][col].dot >= 4) {
+            this.queue.unshift({ row: r, col: col });
+          }
+        }
+      }
+      for (let c = col - 1; c < col + 2; c += 2) {
+        if (this.valid(row, c)) {
+          this.gameMatrix[row][c].dot += 1;
+          this.gameMatrix[row][c].player = player;
+          if (this.gameMatrix[row][c].dot >= 4) {
+            this.queue.unshift({ row: row, col: c });
           }
         }
       }

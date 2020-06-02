@@ -30,6 +30,8 @@ var Game = /** @class */ (function () {
             for (var i = 0; i < players; i++) {
                 this.status[i] = { dots: 3, pieces: 1 };
             }
+            this.width = 10;
+            this.height = 10;
         }
         this.turn = 0;
         this.phase = 0;
@@ -102,13 +104,20 @@ var Game = /** @class */ (function () {
             var row = el.row;
             var col = el.col;
             for (var r = row - 1; r < row + 2; r += 2) {
-                for (var c = col - 1; c < col + 2; c += 2) {
-                    if (this.valid(r, c)) {
-                        this.gameMatrix[r][c].dot += 1;
-                        this.gameMatrix[r][c].player = player;
-                        if (this.gameMatrix[r][c].dot >= 4) {
-                            this.queue.unshift({ row: r, col: c });
-                        }
+                if (this.valid(r, col)) {
+                    this.gameMatrix[r][col].dot += 1;
+                    this.gameMatrix[r][col].player = player;
+                    if (this.gameMatrix[r][col].dot >= 4) {
+                        this.queue.unshift({ row: r, col: col });
+                    }
+                }
+            }
+            for (var c = col - 1; c < col + 2; c += 2) {
+                if (this.valid(row, c)) {
+                    this.gameMatrix[row][c].dot += 1;
+                    this.gameMatrix[row][c].player = player;
+                    if (this.gameMatrix[row][c].dot >= 4) {
+                        this.queue.unshift({ row: row, col: c });
                     }
                 }
             }
