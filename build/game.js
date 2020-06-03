@@ -47,6 +47,7 @@ var Game = /** @class */ (function () {
             throw new Error('Not your turn');
         }
         this.gameMatrix[row][col].dot += 1;
+        console.log(this.gameMatrix[row][col]);
         if (this.gameMatrix[row][col].dot >= 4) {
             this.explode([{ row: row, col: col }], player);
         }
@@ -94,8 +95,11 @@ var Game = /** @class */ (function () {
             var col = el.col;
             if (this.gameMatrix[row][col].dot >= 4) {
                 this.gameMatrix[row][col].dot -= 4;
+                if (this.gameMatrix[row][col].dot == 0) {
+                    this.gameMatrix[row][col].player = null;
+                }
                 if (this.gameMatrix[row][col].dot >= 4) {
-                    this.queue;
+                    this.queue.unshift({ row: row, col: col });
                 }
             }
         }

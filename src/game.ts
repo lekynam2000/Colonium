@@ -46,6 +46,7 @@ export default class Game {
       throw new Error('Not your turn');
     }
     this.gameMatrix[row][col].dot += 1;
+    console.log(this.gameMatrix[row][col]);
     if (this.gameMatrix[row][col].dot >= 4) {
       this.explode([{ row, col }], player);
     }
@@ -92,8 +93,11 @@ export default class Game {
       let col = el.col;
       if (this.gameMatrix[row][col].dot >= 4) {
         this.gameMatrix[row][col].dot -= 4;
+        if (this.gameMatrix[row][col].dot == 0) {
+          this.gameMatrix[row][col].player = null;
+        }
         if (this.gameMatrix[row][col].dot >= 4) {
-          this.queue;
+          this.queue.unshift({ row, col });
         }
       }
     }

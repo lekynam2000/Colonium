@@ -1,6 +1,6 @@
 export function getPiece(n, color, side = 4.5) {
   var height = side / 2;
-  var CylinderGeometry = new THREE.CylinderGeometry(side, side, height, 100);
+  var CylinderGeometry = new THREE.CylinderGeometry(side, side, height, 50);
   var CylinderMaterial = new THREE.MeshStandardMaterial({
     color,
     metalness: 0.4,
